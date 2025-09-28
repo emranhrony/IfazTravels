@@ -1,5 +1,5 @@
 {
-  "name": "ifaz-travels-landing",
+  "name": "ifaz-travels",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -11,15 +11,15 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "lucide-react": "^0.344.0"
+    "lucide-react": "^0.263.0"
   },
   "devDependencies": {
-    "vite": "^4.5.0",
-    "tailwindcss": "^3.4.13",
-    "postcss": "^8.4.47",
-    "autoprefixer": "^10.4.20",
-    "typescript": "^5.6.2",
-    "gh-pages": "^6.2.0",
-    "@vitejs/plugin-react": "^4.3.2"
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.23",
+    "tailwindcss": "^3.3.2",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9",
+    "gh-pages": "^6.0.0"
   }
 }
