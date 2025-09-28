@@ -1,13 +1,28 @@
 import React, { useState } from "react";
-import { Phone, MessageCircle, CalendarDays, MapPin, Clock4, ChevronRight, Plane, CheckCircle2 } from "lucide-react";
+import { Phone, MessageCircle, CalendarDays, MapPin, Clock4, ChevronRight, Plane, CheckCircle2, Images } from "lucide-react";
 
 const CTA_WHATSAPP = "https://api.whatsapp.com/send/?phone=8801712055858&text=Assalamu%20Alaikum!%20I%20want%20to%20book%20the%2014-day%20Umrah%20package.&type=phone_number&app_absent=0";
 const CTA_CALL_1 = "tel:+8801712055858";
 const CTA_CALL_2 = "tel:+8801714642113";
 const CTA_MESSENGER = "https://m.me/"; // publish হলে আপনার পেজ ইউজারনেম দিন
 
+// \u09AA\u09CB\u09B8\u09CD\u099F\u09BE\u09B0 \u0987\u09AE\u09C7\u099C \u09AF\u09CB\u0997 \u0995\u09B0\u09BE \u0996\u09C1\u09AC \u098F\u0987 \u09B2\u09BF\u09B8\u09CD\u099F\u099F\u09BF \\n// GitHub \u09A1\u09BF\u09AA\u09CD\u09B2\u09AF\u09BC\u0995\u09B0\u09C7 \u0987\u09AE\u09C7\u099C \u09A6\u09C7\u0996\u09A4\u09C7 \u099A\u09BE\u0987\u09B2\u09C7 /public/posters \u09AB\u09CB\u09B2\u09CD\u09A1\u09BE\u09B0\u09C7 \u099A\u09BF\u09A4\u09CD\u09B0 \u09B0\u09C7\u0996\u09C1\u09A8 \u098F\u09AC\u0982 \u098F\u0987 \u099A\u09A1\u09BC\u09BE\u09B0 \u098F\u09B0\u09C7 POSTERS \u0985\u09CD\u09AF\u09BE\u09B0\u09C7 \u09AA\u09BE\u09A5 \u098F\u09A1 \u0995\u09B0\u09C1\u09A8।
+const POSTERS_DEFAULT = [
+  "/posters/poster1.jpg",
+  "/posters/poster2.jpg",
+  "/posters/poster3.jpg",
+];
+
 export default function App() {
   const [openForm, setOpenForm] = useState(false);
+  const [posters, setPosters] = useState(POSTERS_DEFAULT);
+
+  // লোকাল প্রিভিউর জন্য আপলোড (ডেপ্লয়ড সাইটে ফাইল সেভ হবে না, শুধু প্রিভিউ দেখাবে)
+  const onPosterUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    const urls = files.map((f) => URL.createObjectURL(f));
+    if (urls.length) setPosters((prev) => [...urls, ...prev]);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-amber-50 to-slate-100 text-slate-900">
@@ -118,6 +133,26 @@ export default function App() {
             points={["প্রিমিয়াম হোটেল", "প্রাইভেট ট্রান্সপোর্ট", "কনসিয়ার্জ সাপোর্ট"]}
             cta={{ label: "কল করে জানতে চান", href: CTA_CALL_1 }}
           />
+        </div>
+      </section>
+
+      {/* Posters (New) */}
+      <section id="posters" className="mx-auto max-w-6xl px-4 pb-14">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-2xl md:text-3xl font-bold flex items-center gap-2"><Images className="w-6 h-6"/> পোস্টার গ্যালারি</h3>
+          <label className="inline-flex items-center gap-2 text-sm cursor-pointer">
+            <input type="file" accept="image/*" multiple className="hidden" onChange={onPosterUpload} />
+            <span className="rounded-full bg-white border px-4 py-2 shadow hover:bg-slate-50">Add Posters (Preview)</span>
+          </label>
+        </div>
+        <p className="text-sm text-slate-600 mb-6">GitHub-এ লাইভের জন্য ছবি রাখুন: <code className="bg-slate-100 px-1 rounded">/public/posters/</code> এবং উপরের <code>POSTERS_DEFAULT</code> লিস্টে নাম দিন। এখানে বাটনটি কেবল প্রিভিউ দেখায়।</p>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {posters.map((src, i) => (
+            <figure key={src + i} className="group relative overflow-hidden rounded-2xl bg-white shadow ring-1 ring-slate-200">
+              <img src={src} alt={`Poster ${i+1}`} className="w-full h-64 object-cover" onError={(e)=>{(e.currentTarget as HTMLImageElement).src = "https://placehold.co/800x1000/png?text=Upload+poster\n/public/posters";}}/>
+              <figcaption className="absolute inset-x-0 bottom-0 bg-black/50 text-white text-xs px-3 py-2 opacity-0 group-hover:opacity-100 transition">Poster {i+1}</figcaption>
+            </figure>
+          ))}
         </div>
       </section>
 
