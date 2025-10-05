@@ -15,11 +15,15 @@
     :root{--brand:#0ea5e9;--brand-dark:#0284c7;--text:#0f172a;--muted:#475569;--bg:#f8fafc;--card:#ffffff;--accent:#16a34a;}
     *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,'Noto Sans Bengali','Noto Sans',sans-serif;color:var(--text);background:var(--bg);} a{text-decoration:none;color:inherit}
     .container{max-width:1100px;margin:0 auto;padding:0 16px}
-    header{position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid #e5e7eb;z-index:50}
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    header{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid #e5e7eb;z-index:60}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:12px}
     .brand{display:flex;align-items:center;gap:10px;font-weight:700}
     .brand .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-dark));display:grid;place-items:center;color:#fff;font-weight:800}
-    .cta{display:flex;gap:10px}
+    /* desktop nav buttons */
+    .nav-links{display:flex;gap:10px;align-items:center}
+    .nav-links .nav-btn{padding:8px 12px;border-radius:10px;border:1px solid transparent;background:transparent;font-weight:700;color:var(--muted)}
+    .nav-links .nav-btn:hover{background:#eef7ff;border-color:#dbeafe;color:var(--brand-dark)}
+    .cta{display:flex;gap:10px;align-items:center}
     .btn{padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;color:var(--text);font-weight:600}
     .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
     .btn.whatsapp{background:#25D366;color:#fff;border-color:#22c55e}
@@ -38,6 +42,26 @@
     /* Floating WhatsApp */
     .wa-float{position:fixed;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:60}
     .wa-float svg{width:28px;height:28px;fill:#fff}
+
+    /* Mobile hamburger */
+    .hamburger{display:none;width:44px;height:44px;border-radius:10px;background:transparent;border:1px solid transparent;align-items:center;justify-content:center}
+    .hamburger .bar{width:22px;height:2px;background:var(--text);display:block;position:relative}
+    .hamburger .bar::before,.hamburger .bar::after{content:"";position:absolute;left:0;width:22px;height:2px;background:var(--text)}
+    .hamburger .bar::before{top:-7px} .hamburger .bar::after{top:7px}
+    /* mobile menu (hidden by default) */
+    .mobile-menu{position:fixed;right:12px;top:64px;background:#fff;border:1px solid #e6eef8;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(2,8,23,.12);display:none;flex-direction:column;gap:8px;z-index:70;min-width:200px}
+    .mobile-menu a{padding:10px;border-radius:8px;font-weight:700;color:var(--muted);border:1px solid transparent}
+    .mobile-menu a:hover{background:#f1f9ff;border-color:#dbeafe;color:var(--brand-dark)}
+
+    /* responsive rules */
+    @media (max-width:767px){
+      .nav-links{display:none}
+      .cta .btn:not(.call){display:none} /* hide extra CTAs on small screens, keep call visible if you want */
+      .hamburger{display:flex}
+    }
+
+    /* Smooth scroll behavior */
+    html { scroll-behavior: smooth; }
   </style>
 </head>
 <body>
@@ -50,15 +74,44 @@
           <small style="color:var(--muted)">Every jpurney begin with us</small>
         </div>
       </div>
-      <div class="cta">
+
+      <!-- Desktop nav buttons (visible on larger screens) -->
+      <nav class="nav-links" aria-label="Primary navigation">
+        <button class="nav-btn" data-target="#packages">Packages</button>
+        <button class="nav-btn" data-target="#dates">Dates</button>
+        <button class="nav-btn" data-target="#contact">Contact</button>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:8px">
+        <!-- Keep call visible (desktop & mobile) -->
         <a class="btn" href="tel:+8801714642113">Call: 01714-642113</a>
-        <a class="btn primary" href="#book">Book Now</a>
+
+        <!-- Desktop-only Book Now removed from header (moved into mobile menu).
+             If you want Book visible on desktop too, move the following back and remove comment. -->
+        <!-- <a class="btn primary" href="#book">Book Now</a> -->
+
+        <!-- Hamburger for mobile -->
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="bar" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- Mobile Menu (will be toggled) -->
+      <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <a href="#packages">Packages</a>
+        <a href="#dates">Dates</a>
+        <a href="#contact">Contact</a>
+        <hr style="border:none;height:1px;background:#eef2f7;margin:6px 0;border-radius:2px" />
+        <!-- Book option shown inside mobile menu -->
+        <a href="#book" class="primary" style="background:var(--brand);color:#fff;border-radius:8px;padding:10px;text-align:center;display:block">Book Now</a>
+        <a href="https://api.whatsapp.com/send/?phone=8801712055858&text&type=phone_number&app_absent=0">WhatsApp: 01712-055858</a>
+        <a href="tel:+8801714642113">Call: 01714-642113</a>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="packages">
       <div class="container">
         <span class="badge">October 19 & November 1, 2025 — Groups</span>
         <h1>১৪ দিনের উমরাহ প্যাকেজ (খাবার ছাড়া) — <span class="price">৳১,৪৫০০০ মাত্র</span></h1>
@@ -71,7 +124,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="dates">
       <div class="container grid cols-3">
         <div class="card">
           <h3>What’s Included</h3>
@@ -112,6 +165,15 @@
         </div>
       </div>
     </section>
+
+    <!-- Contact anchor -->
+    <section class="section" id="contact">
+      <div class="container card">
+        <h3>Contact & Office</h3>
+        <p><strong>Efaz Travels — Umrah & Hajj Services</strong><br/>এক্সট্রা-১, ৩য় তলা, গোল্ডেন টাওয়ার, আম্বরখানা, সিলেট</p>
+        <p>📞 01712-055858 (গোলাম রব্বানী) · 01714-642113 (ইমরান এইচ রনি)<br/>📧 info@efaztravels.com · 🌐 your-website.com</p>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -135,5 +197,51 @@
      href="https://api.whatsapp.com/send/?phone=8801712055858&text&type=phone_number&app_absent=0">
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M19.11 17.36c-.27-.13-1.6-.79-1.85-.88-.25-.1-.43-.13-.62.14-.18.26-.71.88-.87 1.06-.16.19-.32.2-.59.07-.27-.13-1.13-.42-2.15-1.35-.79-.7-1.32-1.57-1.48-1.84-.15-.26-.02-.4.11-.53.11-.11.26-.28.39-.42.13-.14.17-.24.26-.4.09-.19.04-.35-.02-.48-.07-.13-.62-1.49-.85-2.04-.22-.53-.44-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.35-.25.26-.96.94-.96 2.3s.99 2.67 1.13 2.86c.14.19 1.95 2.98 4.72 4.05.66.28 1.17.45 1.57.58.66.21 1.26.18 1.73.11.53-.08 1.6-.65 1.83-1.29.23-.63.23-1.17.16-1.28-.06-.11-.24-.18-.51-.31zM16.02 3C9.94 3 5 7.94 5 14.02c0 2.4.79 4.62 2.13 6.42L5.03 27l6.73-2.07a10.96 10.96 0 0 0 4.26.85c6.07 0 11-4.94 11-11.02S22.09 3 16.02 3z"/></svg>
   </a>
+
+  <script>
+    // Hamburger toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.style.display === 'flex';
+      if (!isOpen) {
+        mobileMenu.style.display = 'flex';
+        hamburger.setAttribute('aria-expanded', 'true');
+        mobileMenu.setAttribute('aria-hidden', 'false');
+      } else {
+        mobileMenu.style.display = 'none';
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+        mobileMenu.style.display = 'none';
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Smooth scrolling for nav buttons (desktop nav)
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = btn.getAttribute('data-target');
+        const el = document.querySelector(target);
+        if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
+      });
+    });
+
+    // Optional: close mobile menu after choosing an item (better UX)
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      });
+    });
+  </script>
 </body>
 </html>
